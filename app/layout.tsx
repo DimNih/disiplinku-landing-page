@@ -13,6 +13,14 @@ export const metadata: Metadata = {
     title: 'DISIPLINKU - Sistem Pencatat Pelanggaran Siswa Digital',
     description: 'Platform digital terdepan untuk mencatat, memantau, dan mengelola pelanggaran siswa',
     type: 'website',
+    images: [
+      {
+        url: '/logo.png', 
+        width: 1200, 
+        height: 630,
+        alt: 'Logo DISIPLINKU',
+      },
+    ],
   },
 };
 
