@@ -94,7 +94,7 @@ const screenshots = [
 export function ScreenshotsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<null | typeof screenshots[0]>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false, timeZone: 'Asia/Jakarta' }));
 
@@ -119,7 +119,15 @@ export function ScreenshotsSection() {
     setCurrentIndex((prev) => (prev - 1 + filteredScreenshots.length) % filteredScreenshots.length);
   };
 
-  const handleImageClick = (screenshot) => {
+  interface Screenshot {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    category: string;
+  }
+
+  const handleImageClick = (screenshot: Screenshot): void => {
     setSelectedImage(screenshot);
     setZoomLevel(1);
   };
@@ -245,7 +253,7 @@ export function ScreenshotsSection() {
                         alt={filteredScreenshots[currentIndex]?.title}
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          e.target.src = '/fallback-image.jpg';
+                          (e.target as HTMLImageElement).src = '/fallback-image.jpg';
                           console.warn(`Failed to load image: ${filteredScreenshots[currentIndex]?.image}`);
                         }}
                       />
@@ -312,7 +320,7 @@ export function ScreenshotsSection() {
                   alt={screenshot.title}
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.target.src = '/fallback-image.jpg';
+                    (e.target as HTMLImageElement).src = '/fallback-image.jpg';
                     console.warn(`Failed to load image: ${screenshot.image}`);
                   }}
                 />
@@ -355,7 +363,7 @@ export function ScreenshotsSection() {
                     style={{ transform: `scale(${zoomLevel})` }}
                     transition={{ duration: 0.3 }}
                     onError={(e) => {
-                      e.target.src = '/fallback-image.jpg';
+                      (e.target as HTMLImageElement).src = '/fallback-image.jpg';
                       console.warn(`Failed to load image: ${selectedImage.image}`);
                     }}
                   />

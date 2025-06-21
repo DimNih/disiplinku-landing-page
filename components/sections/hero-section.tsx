@@ -146,7 +146,7 @@ export function HeroSection() {
               className="flex flex-col sm:flex-row gap-3 sm:gap-4"
             >
               <motion.a
-                href="/app.apk"
+                href="/apk.apk"
                 download
                 whileHover={{ scale: 1.05, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
                 whileTap={{ scale: 0.95 }}

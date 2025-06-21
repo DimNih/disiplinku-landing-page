@@ -79,7 +79,14 @@ export function Navigation() {
     { href: '#testimonials', label: 'Testimoni' },
   ];
 
-  const handleLinkClick = (href) => {
+  interface NavItem {
+    href: string;
+    label: string;
+  }
+
+  interface HandleLinkClickEvent extends React.MouseEvent<HTMLAnchorElement, MouseEvent> {}
+
+  const handleLinkClick = (e: HandleLinkClickEvent, href: string): void => {
     e.preventDefault();
     setIsMenuOpen(false); // Close menu immediately
     setActiveSection(href); // Set active section
@@ -150,7 +157,7 @@ export function Navigation() {
               </Link>
             ))}
             <motion.a
-              href="/app.apk"
+              href="/apk.apk"
               download
               whileHover={{ scale: 1.05, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
               whileTap={{ scale: 0.95 }}
