@@ -79,7 +79,7 @@ export function Navigation() {
     { href: '#testimonials', label: 'Testimoni' },
   ];
 
-  const handleLinkClick = (e, href) => {
+  const handleLinkClick = (href) => {
     e.preventDefault();
     setIsMenuOpen(false); // Close menu immediately
     setActiveSection(href); // Set active section
