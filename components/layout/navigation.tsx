@@ -157,7 +157,7 @@ export function Navigation() {
               </Link>
             ))}
             <motion.a
-              href="/apk.apk"
+              href="/Disiplinku.apk"
               download
               whileHover={{ scale: 1.05, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
               whileTap={{ scale: 0.95 }}

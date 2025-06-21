@@ -98,7 +98,7 @@ export function HeroSection() {
                 className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl"
               >
                 Aplikasi Android terdepan untuk mencatat, memantau, dan mengelola pelanggaran siswa 
-                dengan sistem terintegrasi yang mudah digunakan oleh guru dan staff sekolah.
+                yang mudah digunakan oleh guru dan Osis di sekolah.
               </motion.p>
             </div>
 
@@ -146,7 +146,7 @@ export function HeroSection() {
               className="flex flex-col sm:flex-row gap-3 sm:gap-4"
             >
               <motion.a
-                href="/apk.apk"
+                href="/Disiplinku.apk"
                 download
                 whileHover={{ scale: 1.05, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
                 whileTap={{ scale: 0.95 }}
