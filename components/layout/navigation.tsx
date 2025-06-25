@@ -114,32 +114,16 @@ export function Navigation() {
     setIsPopupOpen(false);
   };
 
-  // Popup animation variants with reduced motion support
+  // Popup animation variants
   const popupVariants = {
-    hidden: { opacity: 0, y: '100%', scale: 0.95 },
+    hidden: { opacity: 0, scale: 0.8, y: 50 },
     visible: {
       opacity: 1,
-      y: 0,
       scale: 1,
-      transition: {
-        duration: 0.3,
-        ease: [0.4, 0, 0.2, 1],
-        when: 'beforeChildren',
-      },
+      y: 0,
+      transition: { duration: 0.3, ease: 'easeOut' },
     },
-    exit: {
-      opacity: 0,
-      y: '100%',
-      scale: 0.95,
-      transition: { duration: 0.2, ease: 'easeIn' },
-    },
-  };
-
-  // Backdrop animation
-  const backdropVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.3 } },
-    exit: { opacity: 0, transition: { duration: 0.2 } },
+    exit: { opacity: 0, scale: 0.8, y: 50, transition: { duration: 0.2 } },
   };
 
   return (
@@ -280,82 +264,83 @@ export function Navigation() {
       />
 
       {/* Popup */}
-      <motion.div
-        className={`fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 transition-opacity duration-300 ${
-          isPopupOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        variants={backdropVariants}
-        initial="hidden"
-        animate={isPopupOpen ? 'visible' : 'hidden'}
-        onClick={() => setIsPopupOpen(false)}
-      >
-        <motion.div
-          className="relative bg-white rounded-t-2xl sm:rounded-2xl p-4 sm:p-6 w-full max-w-md sm:max-w-lg shadow-2xl sm:shadow-lg flex flex-col gap-4 sm:gap-6"
-          variants={popupVariants}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Drag Handle for Mobile */}
-          <div className="flex justify-center sm:hidden">
-            <div className="w-10 h-1.5 bg-gray-300 rounded-full" />
-          </div>
-
-          {/* Close Button */}
-          <motion.button
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-            whileHover={{ scale: 1.1, rotate: 90 }}
-            whileTap={{ scale: 0.9 }}
+      <AnimatePresence>
+        {isPopupOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             onClick={() => setIsPopupOpen(false)}
           >
-            <X className="w-5 h-5" />
-          </motion.button>
-
-          {/* Popup Content */}
-          <div className="text-center space-y-3 sm:space-y-4">
-            <motion.h2
-              className="text-lg sm:text-xl font-bold text-gray-900"
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              Mohon Izin Ke Admin
-            </motion.h2>
-            <motion.p
-              className="text-xs sm:text-sm text-gray-600 leading-relaxed"
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              Silakan hubungi admin untuk mendapatkan izin download aplikasi Disiplinku.
-            </motion.p>
             <motion.div
-              className="bg-orange-100 text-orange-800 px-3 py-2 rounded-lg text-xs sm:text-sm inline-flex items-center flex-wrap justify-center gap-2"
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
+              className="relative bg-white rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl"
+              variants={popupVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onClick={(e) => e.stopPropagation()}
             >
-              <span className="font-semibold">Admin: Dimas</span>
-              <span>WhatsApp: 081585261728</span>
-            </motion.div>
-            <motion.a
-              href="https://wa.me/6281585261728?text=Saya%20Izin%20Download%20Aplikasi%20Nya%20Bang"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleWhatsAppClick}
-              className="group inline-flex items-center justify-center bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold shadow-md hover:shadow-lg w-full sm:w-auto"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              Hubungi via WhatsApp
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </motion.a>
-          </div>
-        </motion.div>
-      </motion.div>
+              {/* Close Button */}
+              <motion.button
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setIsPopupOpen(false)}
+              >
+                <X className="w-5 h-5" />
+              </motion.button>
 
-      {/* Inline CSS for shimmer effect and reduced motion */}
+              {/* Popup Content */}
+              <div className="text-center space-y-4">
+                <motion.h2
+                  className="text-xl sm:text-2xl font-bold text-gray-900"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  Mohon Izin Ke Admin
+                </motion.h2>
+                <motion.p
+                  className="text-sm sm:text-base text-gray-600"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  Silakan hubungi admin untuk mendapatkan izin download aplikasi Disiplinku.
+                </motion.p>
+                <motion.div
+                  className="bg-orange-100 text-orange-800 px-4 py-2 rounded-lg inline-flex items-center"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <span className="font-semibold">Admin: Dimas</span>
+                  <span className="ml-2">WhatsApp: 081585261728</span>
+                </motion.div>
+                <motion.a
+                  href="https://wa.me/6281585261728?text=Saya%20Izin%20Download%20Aplikasi%20Nya%20Bang"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleWhatsAppClick}
+                  className="group inline-flex items-center justify-center bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-6 py-3 rounded-xl text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  Hubungi via WhatsApp
+                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </motion.a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Inline CSS for shimmer effect */}
       <style jsx>{`
         .shimmer-text {
           background: linear-gradient(
@@ -383,19 +368,6 @@ export function Navigation() {
         /* Ensure body scroll is not locked */
         body {
           overflow: auto !important;
-        }
-
-        /* Reduced motion styles */
-        @media (prefers-reduced-motion: reduce) {
-          .motion-div,
-          .motion-button,
-          .motion-a,
-          .motion-h2,
-          .motion-p,
-          .motion-span {
-            transition: none !important;
-            animation: none !important;
-          }
         }
       `}</style>
     </>
