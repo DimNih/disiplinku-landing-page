@@ -9,7 +9,7 @@ export function HeroSection() {
   // State for popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   // Reference to the hidden download link
-  const downloadRef = useRef(null);
+  const downloadRef = useRef<HTMLAnchorElement>(null);
 
   // Animation variants for content
   const contentVariants = {
@@ -51,9 +51,9 @@ export function HeroSection() {
       backgroundPosition: '200% 50%',
       transition: {
         duration: 15,
-        ease: 'linear',
+        ease: ["linear"],
         repeat: Infinity,
-        repeatType: 'reverse',
+        repeatType: "reverse" as "reverse",
       },
     },
   };
@@ -61,7 +61,7 @@ export function HeroSection() {
   // Particle animation for decorative elements
   const particleVariants = {
     initial: { opacity: 0, y: 50, scale: 0.5 },
-    animate: (i) => ({
+    animate: (i: number) => ({
       opacity: [0.2, 0.8, 0.2],
       y: [50, -50, 50],
       scale: [0.5, 1, 0.5],
