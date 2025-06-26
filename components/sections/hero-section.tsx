@@ -5,11 +5,7 @@ import { ArrowRight, Download, Star, X } from 'lucide-react';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
 import { useRef, useState } from 'react';
 
-type Props = {
-  visitorCount: number;
-};
-
-export function HeroSection({ visitorCount }: Props) {
+export function HeroSection() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const downloadRef = useRef<HTMLAnchorElement>(null);
 
@@ -62,12 +58,6 @@ export function HeroSection({ visitorCount }: Props) {
                 </div>
                 <div className="text-xs sm:text-sm text-gray-600">Guru</div>
               </div>
-            </motion.div>
-
-            <motion.div className="flex items-center gap-2 text-sm sm:text-base text-gray-700 mt-4">
-              <span>👥</span>
-              <span>Orang yang melihat web ini:</span>
-              <span className="font-bold text-orange-600">{visitorCount}</span>
             </motion.div>
 
             <motion.div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
