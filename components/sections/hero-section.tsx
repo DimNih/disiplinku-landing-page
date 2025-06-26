@@ -1,87 +1,47 @@
 'use client';
 
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Download, Star, X } from 'lucide-react';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 
 export function HeroSection() {
   // State for popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  // State for mouse position for parallax effect
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   // Reference to the hidden download link
-  const downloadRef = useRef<HTMLAnchorElement>(null);
-  // Reference to the phone mockup for mouse interaction
-  const phoneRef = useRef<HTMLDivElement>(null);
-  // Reference to the section for scroll tracking
-  const sectionRef = useRef(null);
+  const downloadRef = useRef(null);
 
-  // Track scroll progress within the section
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end start'],
-  });
-
-  // Transform scroll progress for smoother animations
-  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.7], [1, 0]), {
-    stiffness: 100,
-    damping: 30,
-  });
-  const yRight = useSpring(useTransform(scrollYProgress, [0, 0.7], [0, -100]), {
-    stiffness: 100,
-    damping: 30,
-  });
-  const scalePhone = useSpring(useTransform(scrollYProgress, [0, 0.7], [1, 0.8]), {
-    stiffness: 100,
-    damping: 30,
-  });
-
-  // Animation variants for content with staggered delays
+  // Animation variants for content
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
+    visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
         ease: 'easeOut',
-        delay: i * 0.2,
-      },
-    }),
-  };
-
-  // Animation variants for phone mockup with parallax and float
-  const phoneVariants = {
-    initial: { opacity: 0, x: 60, scale: 0.7 },
-    animate: {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-      transition: {
-        duration: 1,
-        ease: 'easeOut',
-        delay: 0.4,
       },
     },
-    float: {
-      y: [-10, 0, -10],
-      rotate: [-1, 1, -1],
+  };
+
+  // Animation variants for phone mockup
+  const phoneVariants = {
+    hidden: { opacity: 0, scale: 0.9, rotate: -5 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      rotate: 0,
       transition: {
-        duration: 4,
-        repeat: Infinity,
-        ease: 'easeInOut',
+        duration: 0.8,
+        ease: 'easeOut',
+        delay: 0.2,
       },
     },
     hover: {
-      scale: 1.08,
-      rotate: 3,
-      boxShadow: '0 15px 30px rgba(0,0,0,0.25)',
-      transition: {
-        type: 'spring',
-        stiffness: 250,
-        damping: 20,
-      },
+      scale: 1.05,
+      rotate: 2,
+      boxShadow: '0 0 20px rgba(255, 85, 0, 0.3)',
+      transition: { duration: 0.3 },
     },
   };
 
@@ -94,75 +54,23 @@ export function HeroSection() {
         duration: 15,
         ease: 'linear',
         repeat: Infinity,
-        repeatType: 'reverse' as const,
-      },
-    },
-  };
-
-  // Radial gradient pulse for background
-  const radialPulseVariants = {
-    initial: { scale: 1, opacity: 0.3 },
-    animate: {
-      scale: 1.2,
-      opacity: 0.5,
-      transition: {
-        duration: 5,
-        ease: 'easeInOut',
-        repeat: Infinity,
-        repeatType: 'reverse' as 'reverse',
-      },
-    },
-  };
-
-  // Decorative background circle animation
-  const circleVariants = {
-    animate: {
-      scale: [1, 1.15, 1],
-      opacity: [0.3, 0.6, 0.3],
-      transition: {
-        duration: 7,
-        repeat: Infinity,
-        ease: 'easeInOut',
-      },
-    },
-  };
-
-  // Border decoration animations
-  const borderVariants1 = {
-    animate: {
-      rotate: [-3, -1, -3],
-      transition: {
-        duration: 5,
-        repeat: Infinity,
-        ease: 'easeInOut',
-      },
-    },
-  };
-  const borderVariants2 = {
-    animate: {
-      rotate: [6, 8, 6],
-      transition: {
-        duration: 5,
-        repeat: Infinity,
-        ease: 'easeInOut',
-        delay: 0.4,
+        repeatType: 'reverse',
       },
     },
   };
 
   // Particle animation for decorative elements
   const particleVariants = {
-    initial: { opacity: 0, y: 100, scale: 0.5 },
-    animate: (i: number) => ({
-      opacity: [0, 0.7, 0],
-      y: [100, -100],
-      x: Math.random() * 50 - 25,
-      scale: [0.5, 1.2, 0.5],
+    initial: { opacity: 0, y: 50, scale: 0.5 },
+    animate: (i) => ({
+      opacity: [0.2, 0.8, 0.2],
+      y: [50, -50, 50],
+      scale: [0.5, 1, 0.5],
       transition: {
-        duration: 4 + i * 0.3,
+        duration: 3 + i * 0.5,
         repeat: Infinity,
         ease: 'easeInOut',
-        delay: i * 0.15,
+        delay: i * 0.2,
       },
     }),
   };
@@ -178,23 +86,6 @@ export function HeroSection() {
     exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } },
   };
 
-  // Handle mouse move for parallax effect
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (phoneRef.current) {
-        const rect = phoneRef.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        const x = (e.clientX - centerX) / 50;
-        const y = (e.clientY - centerY) / 50;
-        setMousePosition({ x, y });
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   // Function to handle WhatsApp click and download
   const handleWhatsAppClick = () => {
     if (downloadRef.current) {
@@ -205,7 +96,6 @@ export function HeroSection() {
 
   return (
     <motion.section
-      ref={sectionRef}
       className="relative min-h-screen bg-gradient-to-b from-white via-orange-50 to-gray-50 flex items-center overflow-hidden"
       variants={backgroundVariants}
       initial="initial"
@@ -215,14 +105,6 @@ export function HeroSection() {
         backgroundSize: '200% 200%',
       }}
     >
-      {/* Radial Gradient Pulse */}
-      <motion.div
-        className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-200/20 to-transparent"
-        variants={radialPulseVariants}
-        initial="initial"
-        animate="animate"
-      />
-
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           {/* Left Content */}
@@ -230,62 +112,32 @@ export function HeroSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            custom={0}
             viewport={{ once: true, amount: 0.3 }}
             className="space-y-6 sm:space-y-8 z-10"
           >
             {/* Badge */}
             <motion.div
               variants={contentVariants}
-              custom={1}
               className="inline-flex items-center px-3 py-1.5 bg-orange-100 text-orange-800 rounded-full text-xs sm:text-sm font-medium"
             >
               <Star className="w-4 h-4 mr-1.5 fill-current" />
               #1 Aplikasi Manajemen Disiplin Sekolah
             </motion.div>
 
-            {/* Main Heading with Shimmer Effect */}
+            {/* Main Heading */}
             <motion.h1
               variants={contentVariants}
-              custom={2}
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight"
             >
               <span className="block">Aplikasi</span>
-              <span
-                className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 relative overflow-hidden"
-                style={{
-                  position: 'relative',
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                }}
-              >
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
                 DISIPLINKU
-                <span
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent"
-                  style={{
-                    animation: 'shimmer 2s infinite',
-                    backgroundSize: '200% 100%',
-                  }}
-                />
               </span>
               <span className="block text-xl sm:text-2xl md:text-3xl">Digital Era</span>
             </motion.h1>
 
-            {/* Shimmer Keyframe Animation */}
-            <style jsx>{`
-              @keyframes shimmer {
-                0% {
-                  background-position: -200% 0;
-                }
-                100% {
-                  background-position: 200% 0;
-                }
-              }
-            `}</style>
-
             <motion.p
               variants={contentVariants}
-              custom={3}
               className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed max-w-md sm:max-w-lg"
             >
               Aplikasi Android terdepan untuk mencatat, memantau, dan mengelola pelanggaran siswa 
@@ -295,7 +147,6 @@ export function HeroSection() {
             {/* Stats */}
             <motion.div
               variants={contentVariants}
-              custom={4}
               className="grid grid-cols-3 gap-4 sm:gap-6"
             >
               <div className="text-center">
@@ -321,14 +172,12 @@ export function HeroSection() {
             {/* CTA Buttons */}
             <motion.div
               variants={contentVariants}
-              custom={5}
               className="flex flex-col sm:flex-row gap-3 sm:gap-4"
             >
               <motion.button
                 onClick={() => setIsPopupOpen(true)}
-                whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(255, 85, 0, 0.5)' }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                animate={{ scale: [1, 1.02, 1], transition: { duration: 1.5, repeat: Infinity } }}
                 className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold shadow-md hover:shadow-lg flex items-center justify-center"
               >
                 <Download className="mr-1.5 w-4 h-4" />
@@ -339,9 +188,8 @@ export function HeroSection() {
                 href="https://adminku-web.vercel.app/login"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)' }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                animate={{ scale: [1, 1.02, 1], transition: { duration: 1.5, repeat: Infinity } }}
                 className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold shadow-md hover:shadow-lg flex items-center justify-center"
               >
                 Demo Admin Web
@@ -353,32 +201,45 @@ export function HeroSection() {
           {/* Right Content - Phone Mockup with Decorative Elements */}
           <motion.div
             variants={phoneVariants}
-            initial="initial"
-            animate={['animate', 'float']}
+            initial="hidden"
+            animate="visible"
+            whileHover="hover"
             viewport={{ once: true, amount: 0.3 }}
-            
-            ref={phoneRef}
-            className="flex justify-center lg:justify-end relative mt-6 sm:mt-0"
+            className="relative flex justify-center lg:justify-end mt-8 sm:mt-0"
           >
-            <div className="relative w-full max-w-[70%] sm:max-w-xs md:max-w-sm">
-            
-             
-           
-            
-              {/* Phone Mockup */}
+            <div className="relative w-full max-w-[80%] sm:max-w-[70%] md:max-w-sm">
+              {/* Background Decorative Circle */}
               <motion.div
-                className="relative z-10 p-3 sm:p-5 bg-black rounded-3xl shadow-2xl"
-                whileHover={{ scale: 1.08, rotate: 3, boxShadow: '0 15px 30px rgba(0,0,0,0.25)' }}
-                transition={{ type: 'spring', stiffness: 200 }}
-              >
-                <motion.img
-                  src="/Mockup.jpg"
-                  alt="Phone Mockup"
-                  className="w-full h-auto object-contain rounded-2xl"
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ type: 'spring', stiffness: 200 }}
+                className="absolute inset-0 bg-gradient-to-r from-orange-200/30 to-red-200/30 rounded-full blur-3xl"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 0.5, scale: 1.2 }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.4 }}
+              />
+
+              {/* Floating Particles */}
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute bg-orange-400 rounded-full"
+                  style={{
+                    width: Math.random() * 8 + 4,
+                    height: Math.random() * 8 + 4,
+                    top: `${Math.random() * 100}%`,
+                    left: `${Math.random() * 100}%`,
+                  }}
+                  variants={particleVariants}
+                  initial="initial"
+                  animate="animate"
+                  custom={i}
                 />
-              </motion.div>
+              ))}
+
+              {/* Phone Mockup */}
+              <motion.img
+                src="/Mockup.jpg"
+                alt="Phone Mockup"
+                className="relative w-full h-auto object-contain rounded-2xl shadow-xl"
+              />
             </div>
           </motion.div>
         </div>
@@ -387,9 +248,8 @@ export function HeroSection() {
       {/* Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1, scale: [1, 1.1, 1] }}
-        transition={{ delay: 0.8, duration: 0.6, scale: { duration: 2, repeat: Infinity } }}
-        style={{ opacity }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
         className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-10"
       >
         <motion.div
@@ -398,7 +258,7 @@ export function HeroSection() {
           className="w-4 h-7 border-2 border-orange-500 rounded-full flex justify-center"
         >
           <motion.div
-            animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
+            animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
             className="w-1 h-2 bg-orange-500 rounded-full mt-1"
           />
@@ -435,7 +295,7 @@ export function HeroSection() {
               {/* Close Button */}
               <motion.button
                 className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsPopupOpen(false)}
               >
