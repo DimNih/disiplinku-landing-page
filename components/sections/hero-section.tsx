@@ -40,7 +40,6 @@ export function HeroSection() {
     hover: {
       scale: 1.05,
       rotate: 2,
-      boxShadow: '0 0 20px rgba(255, 85, 0, 0.3)',
       transition: { duration: 0.3 },
     },
   };
