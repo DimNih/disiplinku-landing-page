@@ -132,7 +132,7 @@ export default function Home() {
       >
         <Navigation />
         <main>
-          <HeroSection visitorCount={visitorCount} />
+          <HeroSection />
           <FeaturesSection />
           <ScreenshotsSection />
           <TestimonialsSection />
