@@ -3,91 +3,15 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Download, Star, X } from 'lucide-react';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
-import { useRef, useState, useEffect } from 'react';
-import { ref, onValue } from 'firebase/database';
-import { database } from '@/lib/firebase';
+import { useRef, useState } from 'react';
 
+type Props = {
+  visitorCount: number;
+};
 
-export function HeroSection() {
+export function HeroSection({ visitorCount }: Props) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const downloadRef = useRef<HTMLAnchorElement>(null);
-  const [visitorCount, setVisitorCount] = useState(0);
-
-
-  useEffect(() => {
-  const countRef = ref(database, 'disiplinku-landingPage/visitor/count');
-  const unsubscribe = onValue(countRef, (snapshot) => {
-    if (snapshot.exists()) {
-      setVisitorCount(snapshot.val());
-    }
-  });
-
-  return () => unsubscribe();
-}, []);
-
-
-
-  const contentVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
-    },
-  };
-
-  const phoneVariants = {
-    hidden: { opacity: 0, scale: 0.9, rotate: -5 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      transition: { duration: 0.8, ease: 'easeOut', delay: 0.2 },
-    },
-    hover: {
-      scale: 1.05,
-      rotate: 2,
-      transition: { duration: 0.3 },
-    },
-  };
-
-  const backgroundVariants = {
-    initial: { backgroundPosition: '0% 50%' },
-    animate: {
-      backgroundPosition: '200% 50%',
-      transition: {
-        duration: 15,
-        ease: ["linear"],
-        repeat: Infinity,
-        repeatType: "reverse" as "reverse",
-      },
-    },
-  };
-
-  const particleVariants = {
-    initial: { opacity: 0, y: 50, scale: 0.5 },
-    animate: (i: number) => ({
-      opacity: [0.2, 0.8, 0.2],
-      y: [50, -50, 50],
-      scale: [0.5, 1, 0.5],
-      transition: {
-        duration: 3 + i * 0.5,
-        repeat: Infinity,
-        ease: 'easeInOut',
-        delay: i * 0.2,
-      },
-    }),
-  };
-
-  const popupVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.3, ease: 'easeOut' },
-    },
-    exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } },
-  };
 
   const handleWhatsAppClick = () => {
     if (downloadRef.current) {
@@ -97,38 +21,16 @@ export function HeroSection() {
   };
 
   return (
-    <motion.section
-      className="relative min-h-screen mt-5 bg-gradient-to-b from-white via-orange-50 to-gray-50 flex items-center overflow-hidden"
-      variants={backgroundVariants}
-      initial="initial"
-      animate="animate"
-      style={{
-        background: 'linear-gradient(90deg, #ffffff, #fef3e7, #f0f0f0, #ffffff)',
-        backgroundSize: '200% 200%',
-      }}
-    >
+    <motion.section className="relative min-h-screen mt-5 bg-gradient-to-b from-white via-orange-50 to-gray-50 flex items-center overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-          {/* Left Content */}
-          <motion.div
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="space-y-6 sm:space-y-8 z-10"
-          >
-            <motion.div
-              variants={contentVariants}
-              className="inline-flex items-center px-3 py-1.5 bg-orange-100 text-orange-800 rounded-full text-xs sm:text-sm font-medium"
-            >
+          <motion.div className="space-y-6 sm:space-y-8 z-10">
+            <motion.div className="inline-flex items-center px-3 py-1.5 bg-orange-100 text-orange-800 rounded-full text-xs sm:text-sm font-medium">
               <Star className="w-4 h-4 mr-1.5 fill-current" />
               #1 Aplikasi Manajemen Disiplin Sekolah
             </motion.div>
 
-            <motion.h1
-              variants={contentVariants}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight"
-            >
+            <motion.h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
               <span className="block">Aplikasi</span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
                 DISIPLINKU
@@ -136,18 +38,12 @@ export function HeroSection() {
               <span className="block text-xl sm:text-2xl md:text-3xl">Digital Era</span>
             </motion.h1>
 
-            <motion.p
-              variants={contentVariants}
-              className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed max-w-md sm:max-w-lg"
-            >
+            <motion.p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed max-w-md sm:max-w-lg">
               Aplikasi Android terdepan untuk mencatat, memantau, dan mengelola pelanggaran siswa 
               yang mudah digunakan oleh guru dan Osis di sekolah.
             </motion.p>
 
-            <motion.div
-              variants={contentVariants}
-              className="grid grid-cols-3 gap-4 sm:gap-6"
-            >
+            <motion.div className="grid grid-cols-3 gap-4 sm:gap-6">
               <div className="text-center">
                 <div className="text-lg sm:text-xl font-bold text-orange-500">
                   <AnimatedCounter end={1} />
@@ -168,25 +64,18 @@ export function HeroSection() {
               </div>
             </motion.div>
 
-            {/* Visitor Count */}
-            <motion.div
-              variants={contentVariants}
-              className="flex items-center gap-2 text-sm sm:text-base text-gray-700 mt-4"
-            >
+            <motion.div className="flex items-center gap-2 text-sm sm:text-base text-gray-700 mt-4">
               <span>👥</span>
               <span>Orang yang melihat web ini:</span>
               <span className="font-bold text-orange-600">{visitorCount}</span>
             </motion.div>
 
-            <motion.div
-              variants={contentVariants}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4"
-            >
+            <motion.div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <motion.button
                 onClick={() => setIsPopupOpen(true)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold shadow-md hover:shadow-lg flex items-center justify-center"
+                className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold shadow-md hover:shadow-lg flex items-center justify-center"
               >
                 <Download className="mr-1.5 w-4 h-4" />
                 Download Gratis
@@ -198,7 +87,7 @@ export function HeroSection() {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold shadow-md hover:shadow-lg flex items-center justify-center"
+                className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold shadow-md hover:shadow-lg flex items-center justify-center"
               >
                 Demo Admin Web
                 <ArrowRight className="ml-1.5 w-4 h-4" />
@@ -206,38 +95,8 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Right Content */}
-          <motion.div
-            variants={phoneVariants}
-            initial="hidden"
-            animate="visible"
-            whileHover="hover"
-            viewport={{ once: true, amount: 0.3 }}
-            className="relative flex justify-center lg:justify-end mt-8 sm:mt-0"
-          >
+          <motion.div className="relative flex justify-center lg:justify-end mt-8 sm:mt-0">
             <div className="relative w-full max-w-[80%] sm:max-w-[70%] md:max-w-sm">
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-orange-200/30 to-red-200/30 rounded-full blur-3xl"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 0.5, scale: 1.2 }}
-                transition={{ duration: 1, ease: 'easeOut', delay: 0.4 }}
-              />
-              {[...Array(5)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute bg-orange-400 rounded-full"
-                  style={{
-                    width: Math.random() * 8 + 4,
-                    height: Math.random() * 8 + 4,
-                    top: `${Math.random() * 100}%`,
-                    left: `${Math.random() * 100}%`,
-                  }}
-                  variants={particleVariants}
-                  initial="initial"
-                  animate="animate"
-                  custom={i}
-                />
-              ))}
               <motion.img
                 src="/Mockup.jpg"
                 alt="Phone Mockup"
@@ -248,31 +107,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8, duration: 0.6 }}
-        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-4 h-7 border-2 border-orange-500 rounded-full flex justify-center"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-1 h-2 bg-orange-500 rounded-full mt-1"
-          />
-        </motion.div>
-      </motion.div>
-
-      <a
-        ref={downloadRef}
-        href="/Disiplinku.apk"
-        download
-        style={{ display: 'none' }}
-      />
+      <a ref={downloadRef} href="/Disiplinku.apk" download style={{ display: 'none' }} />
 
       <AnimatePresence>
         {isPopupOpen && (
@@ -286,10 +121,6 @@ export function HeroSection() {
           >
             <motion.div
               className="relative bg-white rounded-2xl p-4 sm:p-6 max-w-[90vw] sm:max-w-md w-full shadow-xl"
-              variants={popupVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
               onClick={(e) => e.stopPropagation()}
             >
               <motion.button
@@ -317,7 +148,7 @@ export function HeroSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={handleWhatsAppClick}
-                  className="group inline-flex items-center justify-center bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg"
+                  className="group inline-flex items-center justify-center bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

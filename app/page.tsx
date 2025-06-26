@@ -8,26 +8,25 @@ import { HeroSection } from '@/components/sections/hero-section';
 import { FeaturesSection } from '@/components/sections/features-section';
 import { ScreenshotsSection } from '@/components/sections/screenshots-section';
 import { TestimonialsSection } from '@/components/sections/testimonials-section';
+import { useVisitorCount } from '@/hooks/useVisitorCount';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
+  const visitorCount = useVisitorCount();
 
   useEffect(() => {
-    // Simulate loading (replace with actual data fetching if needed)
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); // 3 seconds for demo to showcase animations
-
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Loading animation variants
   const loaderVariants = {
     initial: { opacity: 1, scale: 1 },
-    exit: { 
+    exit: {
       opacity: 0,
       scale: 1.2,
-      transition: { duration: 0.8, ease: 'easeInOut' }
+      transition: { duration: 0.8, ease: 'easeInOut' },
     },
   };
 
@@ -48,10 +47,7 @@ export default function Home() {
     initial: { width: '0%' },
     animate: {
       width: '100%',
-      transition: {
-        duration: 2.5,
-        ease: 'easeInOut',
-      },
+      transition: { duration: 2.5, ease: 'easeInOut' },
     },
   };
 
@@ -70,7 +66,6 @@ export default function Home() {
 
   return (
     <>
-      {/* Loading Overlay */}
       <AnimatePresence>
         {isLoading && (
           <motion.div
@@ -79,7 +74,6 @@ export default function Home() {
             exit="exit"
             className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-orange-500 to-red-500 overflow-hidden"
           >
-            {/* Background Particles */}
             <div className="absolute inset-0">
               {[...Array(20)].map((_, i) => (
                 <motion.div
@@ -96,7 +90,6 @@ export default function Home() {
             </div>
 
             <div className="relative flex flex-col items-center gap-6 z-10">
-              {/* Logo with Glowing Animation */}
               <motion.div
                 variants={logoVariants}
                 animate="animate"
@@ -106,15 +99,10 @@ export default function Home() {
                   src="/logo.png"
                   alt="DISIPLINKU Logo"
                   className="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-lg"
-                  onError={() => console.warn('Logo failed to load')}
                 />
-               
               </motion.div>
 
-              {/* Progress Bar */}
-              <motion.div
-                className="w-48 sm:w-64 h-2 bg-white/20 rounded-full overflow-hidden"
-              >
+              <motion.div className="w-48 sm:w-64 h-2 bg-white/20 rounded-full overflow-hidden">
                 <motion.div
                   variants={progressBarVariants}
                   initial="initial"
@@ -123,7 +111,6 @@ export default function Home() {
                 />
               </motion.div>
 
-              {/* Minimal Loading Text */}
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -137,7 +124,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: isLoading ? 0 : 1, y: isLoading ? 20 : 0 }}
@@ -146,39 +132,20 @@ export default function Home() {
       >
         <Navigation />
         <main>
-          <HeroSection />
+          <HeroSection visitorCount={visitorCount} />
           <FeaturesSection />
           <ScreenshotsSection />
           <TestimonialsSection />
+
+          <div className="text-center py-8 text-gray-700">
+            <p className="text-sm sm:text-base">
+              👥 <span className="font-medium">Orang yang melihat web ini:</span>{' '}
+              <span className="font-bold text-orange-600">{visitorCount}</span>
+            </p>
+          </div>
         </main>
         <Footer />
       </motion.div>
-
-      {/* Inline CSS for Shimmer Effect */}
-      <style jsx>{`
-        .shimmer-text {
-          background: linear-gradient(
-            90deg,
-            #ffffff 25%,
-            #f0f0f0 50%,
-            #ffffff 75%
-          );
-          background-size: 200% 100%;
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          animation: shimmer 2.5s linear infinite;
-        }
-
-        @keyframes shimmer {
-          0% {
-            background-position: 200% 0;
-          }
-          100% {
-            background-position: -200% 0;
-          }
-        }
-      `}</style>
     </>
   );
 }
