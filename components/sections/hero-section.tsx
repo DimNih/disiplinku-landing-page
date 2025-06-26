@@ -86,23 +86,20 @@ export function HeroSection() {
 
   // Popup animation variants
   const popupVariants = {
-    hidden: { opacity: 0, scale: 0.8, y: 50 },
+    hidden: { opacity: 0, scale: 0.9 },
     visible: {
       opacity: 1,
       scale: 1,
-      y: 0,
       transition: { duration: 0.3, ease: 'easeOut' },
     },
-    exit: { opacity: 0, scale: 0.8, y: 50, transition: { duration: 0.2 } },
+    exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } },
   };
 
   // Function to handle WhatsApp click and download
   const handleWhatsAppClick = () => {
-    // Trigger download by simulating click on hidden link
     if (downloadRef.current) {
       downloadRef.current.click();
     }
-    // Close popup
     setIsPopupOpen(false);
   };
 
@@ -242,7 +239,7 @@ export function HeroSection() {
                   >
                     <AnimatedCounter end={20} suffix="+" />
                   </motion.div>
-                  <div className="text-xs sm:text-sm text-gray-600">Guru</div>
+                  <div className="text-xs sm:text-smHour text-gray-600">Guru</div>
                 </motion.div>
               </motion.div>
 
@@ -369,7 +366,7 @@ export function HeroSection() {
       {/* Popup */}
       {isPopupOpen && (
         <motion.div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4 sm:px-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -377,7 +374,7 @@ export function HeroSection() {
           onClick={() => setIsPopupOpen(false)}
         >
           <motion.div
-            className="relative bg-white rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl"
+            className="relative bg-white rounded-2xl p-4 sm:p-6 max-w-[90vw] sm:max-w-md w-full shadow-xl"
             variants={popupVariants}
             initial="hidden"
             animate="visible"
@@ -386,7 +383,7 @@ export function HeroSection() {
           >
             {/* Close Button */}
             <motion.button
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
               whileHover={{ scale: 1.1, rotate: 90 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsPopupOpen(false)}
@@ -395,43 +392,25 @@ export function HeroSection() {
             </motion.button>
 
             {/* Popup Content */}
-            <div className="text-center space-y-4">
-              <motion.h2
-                className="text-xl sm:text-2xl font-bold text-gray-900"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
+            <div className="text-center space-y-3 sm:space-y-4">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                 Mohon Izin Ke Admin
-              </motion.h2>
-              <motion.p
-                className="text-sm sm:text-base text-gray-600"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-600">
                 Silakan hubungi admin untuk mendapatkan izin download aplikasi Disiplinku.
-              </motion.p>
-              <motion.div
-                className="bg-orange-100 text-orange-800 px-4 py-2 rounded-lg inline-flex items-center"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
+              </p>
+              <div className="bg-orange-100 text-orange-800 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg inline-flex items-center text-xs sm:text-sm">
                 <span className="font-semibold">Admin: Dimas</span>
                 <span className="ml-2">WhatsApp: 081585261728</span>
-              </motion.div>
+              </div>
               <motion.a
                 href="https://wa.me/6281585261728?text=Saya%20Izin%20Download%20Aplikasi%20Nya%20Bang"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={handleWhatsAppClick}
-                className="group inline-flex items-center justify-center bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-6 py-3 rounded-xl text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
+                className="group inline-flex items-center justify-center bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
               >
                 Hubungi via WhatsApp
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />

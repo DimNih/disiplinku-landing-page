@@ -124,7 +124,7 @@ export function Footer() {
               transition={{ duration: 0.6 }}
               className="text-gray-400 text-sm mb-4 md:mb-0"
             >
-              © 2025 DISIPLINKU. Semua hak dilindungi undang-undang.
+              © 2025 DISIPLINKU.
             </motion.div>
             
             <motion.div
