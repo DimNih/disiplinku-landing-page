@@ -3,39 +3,39 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Download, Star, X } from 'lucide-react';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 export function HeroSection() {
-  // State for popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  // Reference to the hidden download link
   const downloadRef = useRef<HTMLAnchorElement>(null);
+  const [visitorCount, setVisitorCount] = useState(0);
 
-  // Animation variants for content
+  useEffect(() => {
+    const updateVisitor = async () => {
+      await fetch('/api/visitor', { method: 'POST' });
+      const res = await fetch('/api/visitor');
+      const data = await res.json();
+      setVisitorCount(data.count);
+    };
+    updateVisitor();
+  }, []);
+
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-      },
+      transition: { duration: 0.6, ease: 'easeOut' },
     },
   };
 
-  // Animation variants for phone mockup
   const phoneVariants = {
     hidden: { opacity: 0, scale: 0.9, rotate: -5 },
     visible: {
       opacity: 1,
       scale: 1,
       rotate: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-        delay: 0.2,
-      },
+      transition: { duration: 0.8, ease: 'easeOut', delay: 0.2 },
     },
     hover: {
       scale: 1.05,
@@ -44,7 +44,6 @@ export function HeroSection() {
     },
   };
 
-  // Background gradient animation
   const backgroundVariants = {
     initial: { backgroundPosition: '0% 50%' },
     animate: {
@@ -58,7 +57,6 @@ export function HeroSection() {
     },
   };
 
-  // Particle animation for decorative elements
   const particleVariants = {
     initial: { opacity: 0, y: 50, scale: 0.5 },
     animate: (i: number) => ({
@@ -74,7 +72,6 @@ export function HeroSection() {
     }),
   };
 
-  // Popup animation variants
   const popupVariants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: {
@@ -85,7 +82,6 @@ export function HeroSection() {
     exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } },
   };
 
-  // Function to handle WhatsApp click and download
   const handleWhatsAppClick = () => {
     if (downloadRef.current) {
       downloadRef.current.click();
@@ -114,7 +110,6 @@ export function HeroSection() {
             viewport={{ once: true, amount: 0.3 }}
             className="space-y-6 sm:space-y-8 z-10"
           >
-            {/* Badge */}
             <motion.div
               variants={contentVariants}
               className="inline-flex items-center px-3 py-1.5 bg-orange-100 text-orange-800 rounded-full text-xs sm:text-sm font-medium"
@@ -123,7 +118,6 @@ export function HeroSection() {
               #1 Aplikasi Manajemen Disiplin Sekolah
             </motion.div>
 
-            {/* Main Heading */}
             <motion.h1
               variants={contentVariants}
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight"
@@ -143,7 +137,6 @@ export function HeroSection() {
               yang mudah digunakan oleh guru dan Osis di sekolah.
             </motion.p>
 
-            {/* Stats */}
             <motion.div
               variants={contentVariants}
               className="grid grid-cols-3 gap-4 sm:gap-6"
@@ -168,7 +161,16 @@ export function HeroSection() {
               </div>
             </motion.div>
 
-            {/* CTA Buttons */}
+            {/* Visitor Count */}
+            <motion.div
+              variants={contentVariants}
+              className="flex items-center gap-2 text-sm sm:text-base text-gray-700 mt-4"
+            >
+              <span>👥</span>
+              <span>Orang yang melihat web ini:</span>
+              <span className="font-bold text-orange-600">{visitorCount}</span>
+            </motion.div>
+
             <motion.div
               variants={contentVariants}
               className="flex flex-col sm:flex-row gap-3 sm:gap-4"
@@ -197,7 +199,7 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Phone Mockup with Decorative Elements */}
+          {/* Right Content */}
           <motion.div
             variants={phoneVariants}
             initial="hidden"
@@ -207,15 +209,12 @@ export function HeroSection() {
             className="relative flex justify-center lg:justify-end mt-8 sm:mt-0"
           >
             <div className="relative w-full max-w-[80%] sm:max-w-[70%] md:max-w-sm">
-              {/* Background Decorative Circle */}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-orange-200/30 to-red-200/30 rounded-full blur-3xl"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 0.5, scale: 1.2 }}
                 transition={{ duration: 1, ease: 'easeOut', delay: 0.4 }}
               />
-
-              {/* Floating Particles */}
               {[...Array(5)].map((_, i) => (
                 <motion.div
                   key={i}
@@ -232,8 +231,6 @@ export function HeroSection() {
                   custom={i}
                 />
               ))}
-
-              {/* Phone Mockup */}
               <motion.img
                 src="/Mockup.jpg"
                 alt="Phone Mockup"
@@ -244,7 +241,6 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -264,7 +260,6 @@ export function HeroSection() {
         </motion.div>
       </motion.div>
 
-      {/* Hidden Download Link */}
       <a
         ref={downloadRef}
         href="/Disiplinku.apk"
@@ -272,7 +267,6 @@ export function HeroSection() {
         style={{ display: 'none' }}
       />
 
-      {/* Popup */}
       <AnimatePresence>
         {isPopupOpen && (
           <motion.div
@@ -291,7 +285,6 @@ export function HeroSection() {
               exit="exit"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
               <motion.button
                 className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
                 whileHover={{ scale: 1.1 }}
@@ -301,7 +294,6 @@ export function HeroSection() {
                 <X className="w-5 h-5" />
               </motion.button>
 
-              {/* Popup Content */}
               <div className="text-center space-y-3 sm:space-y-4">
                 <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                   Mohon Izin Ke Admin
