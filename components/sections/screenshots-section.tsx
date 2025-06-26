@@ -216,8 +216,8 @@ export function ScreenshotsSection() {
           className="relative mb-8 sm:mb-12"
         >
           <div className="relative bg-gradient-to-br from-orange-500 to-red-500 p-4 sm:p-6 lg:p-8 rounded-3xl shadow-2xl">
-            <div className="bg-white rounded-3xl p-3 sm:p-4 shadow-inner">
-              <div className="relative bg-white rounded-3xl overflow-hidden">
+            <div className="bg-orange rounded-3xl p-3 sm:p-4 shadow-inner">
+              <div className="relative bg-orange rounded-3xl overflow-hidden">
                 {/* Phone Frame */}
                 <div className="w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] mx-auto bg-black rounded-3xl p-2 sm:p-3 relative">
                   {/* Notch */}
@@ -228,7 +228,7 @@ export function ScreenshotsSection() {
                     {/* Status Bar */}
                     <div className="flex justify-between items-center px-3 sm:px-4 py-1 sm:py-1.5 bg-orange-500 text-white text-[10px] sm:text-xs font-medium">
                       <span>{currentTime}</span>
-                      <span className="font-semibold">DISIPLINKU</span>
+                      <span className="font-semibold">PHONE</span>
                       <span>
                         <svg className="w-4 sm:w-5 h-2 sm:h-2.5 inline-block" viewBox="0 0 20 10">
                           <rect x="0" y="2" width="4" height="6" rx="1" fill="white" />

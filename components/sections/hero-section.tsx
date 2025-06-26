@@ -95,7 +95,7 @@ export function HeroSection() {
 
   return (
     <motion.section
-      className="relative min-h-screen bg-gradient-to-b from-white via-orange-50 to-gray-50 flex items-center overflow-hidden"
+      className="relative min-h-screen mt-5 bg-gradient-to-b from-white via-orange-50 to-gray-50 flex items-center overflow-hidden"
       variants={backgroundVariants}
       initial="initial"
       animate="animate"
