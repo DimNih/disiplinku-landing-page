@@ -4,21 +4,28 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Download, Star, X } from 'lucide-react';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
 import { useRef, useState, useEffect } from 'react';
+import { ref, onValue } from 'firebase/database';
+import { database } from '@/lib/firebase';
+
 
 export function HeroSection() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const downloadRef = useRef<HTMLAnchorElement>(null);
   const [visitorCount, setVisitorCount] = useState(0);
 
+
   useEffect(() => {
-    const updateVisitor = async () => {
-      await fetch('/api/visitor', { method: 'POST' });
-      const res = await fetch('/api/visitor');
-      const data = await res.json();
-      setVisitorCount(data.count);
-    };
-    updateVisitor();
-  }, []);
+  const countRef = ref(database, 'disiplinku-landingPage/visitor/count');
+  const unsubscribe = onValue(countRef, (snapshot) => {
+    if (snapshot.exists()) {
+      setVisitorCount(snapshot.val());
+    }
+  });
+
+  return () => unsubscribe();
+}, []);
+
+
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
